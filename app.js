@@ -5,9 +5,9 @@ const infoResult = document.querySelector('#info-result');
 
 let previousCard = null;
 let flippedCouplesCount = 0;
-//let cardsCount = 0;
 let accessToFlip = true;
 let countOfTries = 0;
+let statusGame = false;
 
 let totalCoupleCount = 4;
 
@@ -17,14 +17,6 @@ selectSize.addEventListener('change', event => {
 });
 
 btn.addEventListener('click', () => initGame(totalCoupleCount));
-
-// const setBoardWidth = (numCouples = 4) => {
-//   if (numCouples > 4) {
-//     elBoard.style.width = '580px';
-//   } else {
-//     elBoard.style.width = numCouples * 125 + 30 * (numCouples - 1) + 'px';
-//   }
-// };
 
 const createElCard = num => {
     const img = document.createElement('img');
@@ -75,18 +67,20 @@ const cardClicked = event => {
                 previousCard.classList.remove('flipped');
                 previousCard = null;
                 accessToFlip = true;
-                updateResult(true);
+                statusGame = true;
+                updateResult();
             }, 1000);
         } else {
             flippedCouplesCount++;
             previousCard = null;
             accessToFlip = true;
-            updateResult(true);
+            statusGame = true;
+            updateResult();
         }
     }
 };
 
-const updateResult = (statusGame = false) => {
+const updateResult = () => {
     let message = '';
 
     if (!statusGame) {
@@ -98,8 +92,7 @@ const updateResult = (statusGame = false) => {
     }
 
     infoResult.textContent = message;
-}
-
+};
 
 const shuffleCards = size => {
     let counter = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -133,10 +126,10 @@ const getRandomInt = (min, max) => {
 const initGame = size => {
     previousCard = null;
     flippedCouplesCount = 0;
-    cardsCount = 0;
     accessToFlip = true;
     countOfTries = 0;
     elBoard.innerHTML = '';
+    statusGame = false;
 
     updateResult();
     shuffleCards(size);
