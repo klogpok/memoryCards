@@ -1,11 +1,13 @@
 const elBoard = document.querySelector('.board');
 const selectSize = document.querySelector('#selectSize');
 const btn = document.querySelector('#btn');
+const infoResult = document.querySelector('#info-result');
 
 let previousCard = null;
 let flippedCouplesCount = 0;
-let cardsCount = 0;
+//let cardsCount = 0;
 let accessToFlip = true;
+let countOfTries = 0;
 
 let totalCoupleCount = 4;
 
@@ -52,10 +54,6 @@ const createElCard = num => {
 const cardClicked = event => {
     const currCard = event.target.parentElement;
 
-    // if (cardsCount === 0) {
-    //   cardsCount++;
-    // }
-
     if (currCard.classList.contains('flipped') || !accessToFlip) {
         return;
     }
@@ -67,6 +65,7 @@ const cardClicked = event => {
     } else {
         let card1 = previousCard.parentElement.dataset.card;
         let card2 = currCard.parentElement.dataset.card;
+        countOfTries++;
 
         if (card1 !== card2) {
             accessToFlip = false;
@@ -76,14 +75,31 @@ const cardClicked = event => {
                 previousCard.classList.remove('flipped');
                 previousCard = null;
                 accessToFlip = true;
+                updateResult(true);
             }, 1000);
         } else {
             flippedCouplesCount++;
             previousCard = null;
             accessToFlip = true;
+            updateResult(true);
         }
     }
 };
+
+const updateResult = (statusGame = false) => {
+    let message = '';
+
+    if (!statusGame) {
+        message = 'Find all the pairs!';
+    } else if (flippedCouplesCount === totalCoupleCount) {
+        message = `Founded ${flippedCouplesCount} from ${totalCoupleCount} pairs by ${countOfTries} tries! You are win!!!`;
+    } else {
+        message = `Founded ${flippedCouplesCount} from ${totalCoupleCount} pairs by ${countOfTries} tries!`;
+    }
+
+    infoResult.textContent = message;
+}
+
 
 const shuffleCards = size => {
     let counter = [1, 2, 3, 4, 5, 6, 7, 8];
@@ -119,10 +135,10 @@ const initGame = size => {
     flippedCouplesCount = 0;
     cardsCount = 0;
     accessToFlip = true;
-
+    countOfTries = 0;
     elBoard.innerHTML = '';
 
-    //setBoardWidth(size);
+    updateResult();
     shuffleCards(size);
 };
 

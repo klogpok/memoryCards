@@ -89,7 +89,7 @@ header {
   top: 58px;
   right: -164px;
   width: 300px;
-  height: 100px;
+  height: 140px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #d4d4d4;
@@ -99,4 +99,8 @@ header {
 
 .info select {
   padding: 5px;
+}
+
+#btn {
+    padding: 5px;
 }
